@@ -1,0 +1,74 @@
+```markdown
+# 132 Pattern
+
+## Problem Description
+
+Given an array of integers, nums, of length n. A 132 pattern is a subsequence of three integers, nums[i], nums[j], and nums[k], where i < j < k and nums[i] < nums[k] < nums[j].
+
+## Intuition
+
+The brute force solution involves using multiple loops, but this approach is inefficient. A better solution is to use a stack to find the 132 pattern in a single pass through the array.
+
+## Approach
+
+1. Create a stack `decreasingStack` to keep track of decreasing elements.
+2. Initialize `maxThirdElement` to the minimum possible value.
+3. Traverse the array from right to left.
+4. For each element in the array:
+    - If the current element is less than `maxThirdElement`, return true (found a 132 pattern).
+    - While the stack is not empty and the top element of the stack is less than the current element:
+        - Update `maxThirdElement` to the top element of the stack.
+        - Pop the top element from the stack.
+    - Push the current element onto the stack.
+5. If no 132 pattern is found after traversing the array, return false.
+
+## Complexity
+
+- Time complexity: O(N)
+- Space complexity: O(N)
+
+## Code
+
+```cpp
+class Solution {
+public:
+    bool find132pattern(vector<int>& nums) {
+        int length = nums.size();
+
+        // Check if the array has less than 3 elements
+        if (length < 3)
+            return false;
+
+        // Stack to keep track of decreasing elements.
+        stack<int> decreasingStack;
+
+        // Maximum value of the third element in the 132 pattern.
+        int maxThirdElement = INT_MIN;
+
+        // Traverse the array from right to left
+        for (int i = length - 1; i >= 0; i--) {
+            int currentNumber = nums[i];
+
+            // Check for 132 pattern
+            if (currentNumber < maxThirdElement)
+                return true;  // Found a 132 pattern.
+
+            // Maintain the stack with decreasing elements
+            while (!decreasingStack.empty() && decreasingStack.top() < currentNumber) {
+                maxThirdElement = decreasingStack.top();
+                decreasingStack.pop();
+            }
+
+            // Push the current element onto the stack.
+            decreasingStack.push(currentNumber);
+        }
+
+        return false; // No 132 pattern found
+    }
+};
+```
+
+This algorithm finds the 132 pattern efficiently using a stack, making it suitable for large input arrays.
+``` 
+
+Make sure to replace the code comments and formatting as per your project's style guide.
